@@ -24,4 +24,4 @@ RUN unzip -q photogenic.zip && \
 CMD ["apachectl", "-D", "FOREGROUND"]
 
 # Expose the required ports
-EXPOSE 80:8080
+
