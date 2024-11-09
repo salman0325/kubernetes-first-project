@@ -1,28 +1,27 @@
-FROM centos
+FROM ubuntu:20.04
 MAINTAINER vikash@gmail.com
 
-# Fix CentOS repositories
-RUN cd /etc/yum.repos.d/ && \
-    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+# Set environment variables to skip interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Install required packages using yum
-RUN yum install -y httpd zip unzip java-1.8.0-openjdk
+# Update package list and install required packages
+RUN apt-get update && \
+    apt-get install -y apache2 zip unzip openjdk-11-jdk && \
+    apt-get clean
 
 # Set working directory
 WORKDIR /var/www/html/
 
-# Manually download the ZIP file (if online URL fails, use a local file)
-# If you have already downloaded the file, use: ADD photogenic.zip /var/www/html/
+# Download the ZIP file
 ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
 
 # Unzip and prepare files
-RUN unzip -q "*.zip" && \
+RUN unzip -q photogenic.zip && \
     cp -rvf photogenic/* . && \
     rm -rf photogenic photogenic.zip
 
 # Start Apache server in the foreground
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+CMD ["apachectl", "-D", "FOREGROUND"]
 
-# Expose ports
+# Expose the required ports
 EXPOSE 80 
