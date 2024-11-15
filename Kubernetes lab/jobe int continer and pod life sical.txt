@@ -1,0 +1,62 @@
+ Install Docker
+$  sudo apt update && apt -y install docker.io
+
+ Install kubectl
+$  curl -LO https://storage.googleapis.com/kubern... -s https://storage.googleapis.com/kubern... &&   chmod +x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
+
+ Install Minikube
+$  curl -Lo minikube https://storage.googleapis.com/miniku... && chmod +x minikube && sudo mv minikube /usr/local/bin/
+
+ Start Minikube
+$  apt install conntrack
+$  minikube start --vm-driver=none
+$  minikube status
+===========Job=====================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: testjob
+spec:
+  template:
+    metadata:
+      name: testjob
+    spec:
+      containers:
+name: counter
+        image: centos:7
+        command: ["bin/bash", "-c", "echo Technical-Guftgu; sleep 5"]
+      restartPolicy: Never
+--------------
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: testjob
+spec:
+  parallelism: 5                           # Runs for pods in parallel
+  activeDeadlineSeconds: 10  # Timesout after 30 sec
+  template:
+    metadata:
+      name: testjob
+    spec:
+      containers:
+name: counter
+        image: centos:7
+        command: ["bin/bash", "-c", "echo Technical-Guftgu; sleep 20"]
+      restartPolicy: Never
+-------------
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+ name: bhupi
+spec:
+ schedule: "* * * * *"
+ jobTemplate:
+   spec:
+     template:
+       spec:
+         containers:
+image: ubuntu
+           name: bhupi
+           command: ["/bin/bash", "-c", "echo Technical-Guftgu; sleep 5"]
+         restartPolicy: Never
+=================
